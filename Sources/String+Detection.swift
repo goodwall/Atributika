@@ -194,7 +194,7 @@ extension String {
     
     public func detectHashTags() -> [Range<String.Index>] {
         
-        return detect(regex: "[#]\\w\\S{1,32}\\b")
+        return detect(regex: "[#]\\w\\S{0,31}\\b")
     }
     
     public func detectMentions() -> [Range<String.Index>] {
