@@ -132,8 +132,10 @@ extension AttributedTextProtocol {
         let ranges = string.detect(textCheckingTypes: [.link])
         
         #if swift(>=4.1)
-        let ds = ranges.compactMap { range in
-            URL(string: String(string[range])).map { Detection(type: .link($0), style: style, range: range, level: Int.max) }
+        let ds = ranges.compactMap { range -> Detection? in
+            let currentUrl = String(string[range])
+            let encodedUrl = currentUrl.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)
+            return URL(string: (encodedUrl ?? currentUrl)).map { Detection(type: .link($0), style: style, range: range, level: Int.max) }
         }
         #else
         let ds = ranges.flatMap { range in
